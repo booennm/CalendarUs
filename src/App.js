@@ -7,8 +7,11 @@ import Header from './components/Header';
 import CalendarPage from './pages/CalendarPage';
 import CreateCalendar from './pages/CreateCalendar';
 import Signup from './pages/Signup';
+import Login from './pages/Login';
+import { useAuth } from './contexts/AuthContext';
 
 function App() {
+  const { currentUser } = useAuth();
   const isLoggedIn = false;
   
   return (
@@ -17,8 +20,9 @@ function App() {
         <Header/>
       </div>
       <Routes>
-        <Route path='/' element={isLoggedIn ? <Home /> : <Navigate to="/signup" />}/>
-        <Route path='/signup' element={isLoggedIn ? <Navigate to="/" /> : <Signup />}/>
+        <Route path='/' exact element={currentUser ? <Home /> : <Navigate to="/signup" />}/>
+        <Route path='/signup' element={currentUser ? <Navigate to="/" /> : <Signup />}/>
+        <Route path='/login' element={<Login/>}/>
         <Route path='/calendar/new' element={<CreateCalendar/>}/>
         <Route path='/calendar/:id' element={<CalendarPage/>}/>
         <Route path='/profile' element={<Profile/>}/>

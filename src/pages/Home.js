@@ -3,15 +3,24 @@ import { db, CALENDARS_REF } from '../firebase';
 import { query, collection, onSnapshot, addDoc } from 'firebase/firestore';
 import Calendar from "../components/Calendar";
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { Navigate } from 'react-router-dom';
 
 function Home() {
 
   const [calendars, setCalendars] = useState([]);
 
+  const { currentUser } = useAuth();
+
   useEffect(() => {
-    getCalendars();
+    if(currentUser) {
+      getCalendars();
+    }
   }, [])
 
+  if( !currentUser ) {
+    return <Navigate  to="/login"/>
+  }
 
   const getCalendars = () => {
     const q = query(collection(db, CALENDARS_REF));
@@ -26,6 +35,7 @@ function Home() {
 
   return (
     <div className="App-header">
+      user: { currentUser.email }
       {calendars.length > 0 && calendars.map((item, i) => (
         <Link to={'/calendar/' + item.id}>{item.name}</Link>
       ))}
