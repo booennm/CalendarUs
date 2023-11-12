@@ -1,6 +1,6 @@
 import { useEffect, useState, Text } from 'react';
 import { db, CALENDARS_REF } from '../firebase';
-import { query, collection, onSnapshot, addDoc } from 'firebase/firestore';
+import { query, collection, onSnapshot, where } from 'firebase/firestore';
 import Calendar from "../components/Calendar";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -23,7 +23,7 @@ function Home() {
   }
 
   const getCalendars = () => {
-    const q = query(collection(db, CALENDARS_REF));
+    const q = query(collection(db, CALENDARS_REF), where('users', 'array-contains', currentUser.uid));
 
     onSnapshot(q, (querySnapshot) => {
       setCalendars(querySnapshot.docs.map(doc => ({

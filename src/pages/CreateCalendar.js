@@ -2,17 +2,24 @@ import React from 'react'
 import { CALENDARS_REF, db } from '../firebase';
 import { useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 function CreateCalendar() {
     const navigate = useNavigate();
+    const { currentUser } = useAuth();
 
     const [name, setName] = useState('');
+
+    if( !currentUser ) {
+        return <Navigate  to="/login"/>
+    }
 
     const createCalendar = () => {
         if (name) {
             const newCalendar = {
                 name: name,
+                users: [currentUser.uid]
             }
 
             addCalendarToDb(newCalendar);
