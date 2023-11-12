@@ -37,7 +37,7 @@ function Home() {
     <div className="App-header">
       user: { currentUser.email }
       {calendars.length > 0 && calendars.map((item, i) => (
-        <Link to={'/calendar/' + item.id}>{item.name}</Link>
+        <Link key={i} to={'/calendar/' + item.id}>{item.name}</Link>
       ))}
       <Link to={'/calendar/new'}>Create New Calendar</Link>
     </div>
