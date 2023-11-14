@@ -20,13 +20,11 @@ export default function Signup() {
     useEffect(() => {
       if(currentUser) {
         const newUserProfile = {
-            name: nameRef.current.value
+            name: nameRef.current.value,
+            email: emailRef.current.value
         }
         createUserProfile(currentUser.uid, newUserProfile);
-        console.log(currentUser.uid + " " + newUserProfile)
         navigate('/');
-      }else {
-        console.log("currentuser is null")
       }
     }, [currentUser])
     
