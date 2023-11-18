@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { db, CALENDARS_REF } from '../firebase';
-import { setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 import DatePicker from 'react-datepicker';
 import { Modal, Form, Button } from 'react-bootstrap';
 
@@ -25,6 +25,11 @@ function EditEvent (props) {
         e.preventDefault();
         setLoading(true);
         editEvent();
+    }
+
+    const handleDelete = () => {
+        setLoading(true);
+        removeEventFromDb();
     }
 
     const onDatePickerChange = (dates) => {
@@ -55,6 +60,17 @@ function EditEvent (props) {
         }
     }
 
+    const removeEventFromDb = async () => {
+        try {
+            const eventRef = doc(db, CALENDARS_REF + id + "/events", props.info.event.id)
+            await deleteDoc(eventRef);
+        } catch (error) {
+            console.log('Error removing document: ', error);
+        }
+        setLoading(false);
+        props.onHide();
+      }
+
   return (
     <Modal
         {...props}
@@ -84,8 +100,9 @@ function EditEvent (props) {
                     inline
                 />
             </Form.Group>
-            <Button className="w-100" type="submit" disabled={loading}>Add Event</Button>
+            <Button className="w-100" type="submit" disabled={loading}>Edit Event</Button>
         </Form>
+            <Button onClick={handleDelete} className="w-100" type="submit" disabled={loading}>Delete Event</Button>
         </Modal.Body>
     </Modal>
   )
