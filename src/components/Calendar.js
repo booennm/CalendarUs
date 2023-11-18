@@ -53,15 +53,10 @@ function Calendar() {
         </div>
       );
     };
-  
+    
+    //use bootstrap modals instead, make event stuff like to-do etc
     return (
       <>
-      {openCreateModal &&
-      <CreateEvent openState={setOpenCreateModal} info={selectedInfo} calendarId={id}/>
-      }
-      {openEditModal &&
-      <EditEvent openState={setOpenEditModal} info={selectedInfo} calendarId={id}/>
-      }
         <FullCalendar
             editable
             selectable
@@ -72,6 +67,16 @@ function Calendar() {
             events={events}
             eventContent={(info) => <EventItem info={info} />}
             //dateClick={this.handleDateClick}
+        />
+        <CreateEvent
+            show={openCreateModal}
+            info={selectedInfo}
+            onHide={() => setOpenCreateModal(false)}
+        />
+        <EditEvent
+            show={openEditModal}
+            info={selectedInfo}
+            onHide={() => setOpenEditModal(false)}
         />
       </>
     );

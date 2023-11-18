@@ -1,15 +1,31 @@
-import React from 'react'
-import '../Modal.css';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import { db, CALENDARS_REF } from '../firebase';
 import { addDoc, collection } from 'firebase/firestore';
+import { Modal, Form, Button } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 
-function CreateEvent ({openState, info, calendarId}) {
+function CreateEvent (props) {
 
-    const [name, setName] = useState('');
-    const [startDate, setStartDate] = useState(info.start);
-    const [endDate, setEndDate] = useState(info.end);
+    const { id } = useParams();
+    const nameRef = useRef();
+    const [loading, setLoading] = useState(false);
+    const [startDate, setStartDate] = useState();
+    const [endDate , setEndDate] = useState();
+    
+    useEffect(() => {
+        if(props.show) {
+            setStartDate(props.info.start);
+            setEndDate(props.info.end);
+        }
+    }, [props.show])
+    
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        createEvent();
+    }
 
     const onDatePickerChange = (dates) => {
         const [start, end] = dates;
@@ -18,22 +34,25 @@ function CreateEvent ({openState, info, calendarId}) {
     };
 
     const createEvent = () => {
-        if (name) {
-            const newEvent = {
-                start: startDate,
-                end: endDate,
-                title: name,
-            }
-
-            addEventToDb(newEvent);
-
-            openState(false);
+        if(!nameRef.current.value) {
+            nameRef.current.value = "New Event"
         }
+
+        const newEvent = {
+            start: startDate,
+            end: endDate,
+            title: nameRef.current.value,
+        }
+
+        addEventToDb(newEvent);
+
+        setLoading(false);
+        props.onHide();
     }
 
     const addEventToDb = async (event) => {
         try {
-            const eventsRef = collection(db, CALENDARS_REF + calendarId + "/events");
+            const eventsRef = collection(db, CALENDARS_REF + id + "/events");
             await addDoc(eventsRef, event);
         } catch (error) {
             console.log('Error adding document: ', error);
@@ -41,40 +60,38 @@ function CreateEvent ({openState, info, calendarId}) {
     }
 
   return (
-    <div className='modalBackground'>
-        <div className='modalContainer'>
-            <div className='modalCloseBtn'>
-                <button onClick={() => openState(false)}> x </button>
-            </div>
-            <div className='modalTitle'>
-                <h1>Title</h1>
-            </div>
-            <div className='modalBody'>
-                <label>
-                    Event name:
-                    <input
-                        type='text'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Duration:
-                    <DatePicker
-                        selected={startDate}
-                        onChange={onDatePickerChange}
-                        startDate={startDate}
-                        endDate={endDate}
-                        selectsRange
-                        inline
-                    />
-                </label>
-            </div>
-            <div className='modalFooter'>
-                <button onClick={createEvent}>button</button>
-            </div>
-        </div>
-    </div>
+    <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+    >
+        <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+            Add Event
+        </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group id="email">
+                <Form.Label>Event Name</Form.Label>
+                <Form.Control type="text" ref={nameRef} placeholder="New Event" />
+            </Form.Group>
+            <Form.Group id="duration">
+                <Form.Label>Event Duration</Form.Label>
+                <DatePicker
+                    selected={startDate}
+                    onChange={onDatePickerChange}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectsRange
+                    inline
+                />
+            </Form.Group>
+            <Button className="w-100" type="submit" disabled={loading}>Add Event</Button>
+        </Form>
+        </Modal.Body>
+    </Modal>
   )
 }
 

@@ -1,40 +1,54 @@
-import React from 'react'
-import '../Modal.css';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import { db, CALENDARS_REF } from '../firebase';
 import { setDoc, doc } from 'firebase/firestore';
 import DatePicker from 'react-datepicker';
+import { Modal, Form, Button } from 'react-bootstrap';
 
-function EditEvent ({openState, info, calendarId}) {
+function EditEvent (props) {
 
-    const [name, setName] = useState(info.event.title);
-    const [startDate, setStartDate] = useState(info.event.start);
-    const [endDate, setEndDate] = useState(info.event.end);
+    const { id } = useParams();
+    const nameRef = useRef();
+    const [loading, setLoading] = useState(false);
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
+
+    useEffect(() => {
+        if(props.show) {
+            setStartDate(props.info.event.start);
+            setEndDate(props.info.event.end);
+            nameRef.current.value = props.info.event.title;
+        }
+    }, [props.show])
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        editEvent();
+    }
 
     const onDatePickerChange = (dates) => {
         const [start, end] = dates;
         setStartDate(start);
         setEndDate(end);
-        console.log(JSON.stringify(info))
-    };
+    }
 
     const editEvent = async () => {
-        if (name) {
-            const updatedEvent = {
-                start: startDate,
-                end: endDate,
-                title: name,
-            }
-            console.log(updatedEvent);
-            setEventToDb(updatedEvent);
-
-            openState(false);
+        const updatedEvent = {
+            start: startDate,
+            end: endDate,
+            title: nameRef.current.value,
         }
+
+        setEventToDb(updatedEvent);
+
+        setLoading(false);
+        props.onHide();
     }
 
     const setEventToDb = async (event) => {
         try {
-            const oldEventRef = doc(db, CALENDARS_REF + calendarId + "/events", info.event.id)
+            const oldEventRef = doc(db, CALENDARS_REF + id + "/events", props.info.event.id)
             await setDoc(oldEventRef, event);
         } catch (error) {
             console.log('Error setting document: ', error);
@@ -42,40 +56,38 @@ function EditEvent ({openState, info, calendarId}) {
     }
 
   return (
-    <div className='modalBackground'>
-        <div className='modalContainer'>
-            <div className='modalCloseBtn'>
-                <button onClick={() => openState(false)}> x </button>
-            </div>
-            <div className='modalTitle'>
-                <h1>Title</h1>
-            </div>
-            <div className='modalBody'>
-                <label>
-                    event name:
-                    <input
-                        type='text'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Duration:
-                    <DatePicker
-                        selected={startDate}
-                        onChange={onDatePickerChange}
-                        startDate={startDate}
-                        endDate={endDate}
-                        selectsRange
-                        inline
-                    />
-                </label>
-            </div>
-            <div className='modalFooter'>
-                <button onClick={editEvent}>button</button>
-            </div>
-        </div>
-    </div>
+    <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+    >
+        <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+            Edit Event
+        </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group id="email">
+                <Form.Label>Event Name</Form.Label>
+                <Form.Control type="text" ref={nameRef} required />
+            </Form.Group>
+            <Form.Group id="duration">
+                <Form.Label>Event Duration</Form.Label>
+                <DatePicker
+                    selected={startDate}
+                    onChange={onDatePickerChange}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectsRange
+                    inline
+                />
+            </Form.Group>
+            <Button className="w-100" type="submit" disabled={loading}>Add Event</Button>
+        </Form>
+        </Modal.Body>
+    </Modal>
   )
 }
 
