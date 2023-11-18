@@ -5,6 +5,7 @@ import { query, collection, onSnapshot } from 'firebase/firestore';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import CreateEvent from './CreateEvent';
 import EditEvent from './EditEvent';
 import { useParams } from 'react-router-dom';
@@ -53,17 +54,16 @@ function Calendar() {
         </div>
       );
     };
-    
-    //use bootstrap modals instead, make event stuff like to-do etc
+
     return (
       <>
         <FullCalendar
-            editable
             selectable
             select={handleSelect}
             eventClick={handleEdit}
-            plugins={[ dayGridPlugin, interactionPlugin ]}
+            plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
             initialView="dayGridMonth"
+            slotDuration= '01:00:00'
             events={events}
             eventContent={(info) => <EventItem info={info} />}
             //dateClick={this.handleDateClick}
