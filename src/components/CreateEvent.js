@@ -15,8 +15,10 @@ function CreateEvent (props) {
     
     useEffect(() => {
         if(props.show) {
-            setStartDate(props.info.start);
-            setEndDate(props.info.end);
+            if(props.info) {
+                setStartDate(props.info.start);
+                setEndDate(props.info.end);
+            }
         }
     }, [props.show])
     

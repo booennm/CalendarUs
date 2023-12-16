@@ -10,22 +10,45 @@ import CreateEvent from './CreateEvent';
 import EditEvent from './EditEvent';
 import { useParams } from 'react-router-dom';
 
-function Calendar() {
+function Calendar({userData}) {
     const {id} = useParams();
 
     const [openCreateModal, setOpenCreateModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [selectedInfo, setSelectedInfo] = useState();
     const [events, setEvents] = useState([]);
-
+    const [unavailability, setUnavailability] = useState([]);
+    const [calendarData, setCalendarData] = useState([]);
   
     useEffect(() => {
         getEvents();
     }, [])
+
+    useEffect(() => {
+      if(userData) {
+        setUnavailability(userData.map((user) => (
+          user.events.map((item) => ({
+            id: item.id,
+            start: item.start,
+            end: item.end,
+            type: 'unavailability'
+          }))
+        )))
+      }
+    }, [userData])
+    
+
+    useEffect(() => {
+      const combinedData = [];
+      combinedData.push(...events);
+      combinedData.push(...unavailability);
+      setCalendarData(combinedData);
+    }, [events, unavailability]);
+
   
     const getEvents = () => {
       const q = query(collection(db, CALENDARS_REF + id + "/events"));
-  
+
       onSnapshot(q, (querySnapshot) => {
         setEvents(querySnapshot.docs.map(doc => ({
           id: doc.id,
@@ -52,7 +75,7 @@ function Calendar() {
         <div>
           <p>{event.title}</p>
         </div>
-      );
+      );  
     };
 
     return (
@@ -64,7 +87,7 @@ function Calendar() {
             plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
             initialView="dayGridMonth"
             slotDuration= '01:00:00'
-            events={events}
+            events={calendarData}
             eventContent={(info) => <EventItem info={info} />}
             //dateClick={this.handleDateClick}
         />

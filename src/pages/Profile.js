@@ -35,6 +35,8 @@ const Profile = () => {
     const newEvent = {
         start: info.start,
         end: info.end,
+        userId: currentUser.uid,
+        type: 'unavailability'
     }
 
     addEventToDb(newEvent);
