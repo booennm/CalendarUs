@@ -1,3 +1,4 @@
+import React from 'react';
 import Calendar from '../components/Calendar'
 import Users from '../components/Users'
 import { useState, useEffect } from 'react';
@@ -6,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { CALENDARS_REF, USERS_REF, db } from '../firebase';
 import { query, collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import CreateEvent from '../components/CreateEvent';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function CalendarPage() {
   const {id} = useParams();
@@ -71,15 +73,15 @@ function CalendarPage() {
   }
 
   return (
-    <div className="App-header">
+    <div className="App-content">
       <Container>
-        <Row>
-          <Button onClick={() => setOpenCreateModal(true)} className="w-100" type="submit">Create Event</Button>
-        </Row>
         <Row>
           <Col>
             <Calendar userData={users}/>
           </Col>
+        </Row>
+        <Row>
+          <Button onClick={() => setOpenCreateModal(true)} className="w-100" type="submit">Create Event</Button>
         </Row>
         <Row className='mx-auto, mt-5'>
           <Col>

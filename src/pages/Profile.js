@@ -1,3 +1,4 @@
+import React from 'react';
 import { useAuth } from "../contexts/AuthContext";
 import { Row, Col, Container } from "react-bootstrap";
 import '../App.css';
@@ -70,7 +71,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="App-header">
+    <div className="App-content">
       <Container>
         <Row>
           <Col>

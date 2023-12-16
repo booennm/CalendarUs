@@ -1,3 +1,4 @@
+import React from 'react';
 import '../App.css';
 import { useEffect, useState } from 'react';
 import { db, CALENDARS_REF } from '../firebase';
@@ -6,6 +7,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import CreateEvent from './CreateEvent';
 import EditEvent from './EditEvent';
 import { useParams } from 'react-router-dom';
@@ -79,17 +81,18 @@ function Calendar({userData}) {
     };
 
     return (
-      <>
+      <div className='main-calendar'>
         <FullCalendar
             selectable
             select={handleSelect}
             eventClick={handleEdit}
-            plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
+            plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin ]}
             initialView="dayGridMonth"
             slotDuration= '01:00:00'
+            dayMaxEvents={1}
+            themeSystem='bootstrap5'
             events={calendarData}
-            eventContent={(info) => <EventItem info={info} />}
-            //dateClick={this.handleDateClick}
+            eventContent={(info) => <EventItem info={info} className="basic-event"/>}
         />
         <CreateEvent
             show={openCreateModal}
@@ -101,7 +104,7 @@ function Calendar({userData}) {
             info={selectedInfo}
             onHide={() => setOpenEditModal(false)}
         />
-      </>
+      </div>
     );
 }
 
