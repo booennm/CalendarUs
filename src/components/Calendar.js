@@ -89,6 +89,8 @@ function Calendar({userData}) {
             plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin ]}
             initialView="dayGridMonth"
             slotDuration= '01:00:00'
+            scrollTime={false}
+            height={'auto'}
             dayMaxEvents={1}
             themeSystem='bootstrap5'
             events={calendarData}
