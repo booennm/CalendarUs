@@ -1,5 +1,3 @@
-Work in progress co-operative calendar app. At the moment the app features an interactive shared calendar using FullCalendar, that authenticated users can add, edit or remove events from. Users are able to create new calendars and invite other users using their signup email. The styling is also in the works and being developed with a mobile first principle.
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
