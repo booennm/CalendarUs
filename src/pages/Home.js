@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEffect, useState, Text } from 'react';
 import { db, CALENDARS_REF } from '../firebase';
 import { query, collection, onSnapshot, where } from 'firebase/firestore';
@@ -35,7 +34,7 @@ function Home() {
   }
 
   return (
-    <div className="App-content">
+    <div className="App-header">
       user: { currentUser.email }
       {calendars.length > 0 && calendars.map((item, i) => (
         <Link key={i} to={'/calendar/' + item.id}>{item.name}</Link>

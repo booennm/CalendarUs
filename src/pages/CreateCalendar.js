@@ -36,7 +36,7 @@ function CreateCalendar() {
     }
 
   return (
-    <div className="App-content">
+    <div className='App-header'>
         <h1>Create New Calendar</h1>
         <label>
             Calendar name:

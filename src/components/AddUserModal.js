@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, Button, Form } from "react-bootstrap"
 import { useRef, useState } from "react";
 import { USERS_REF, db, CALENDARS_REF } from "../firebase";
