@@ -2,7 +2,6 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: #d5dbe9;
 }
 
 .App-logo {
@@ -23,7 +22,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(6px + 2vmin);
+  font-size: calc(10px + 2vmin);
   color: white;
 }
 
@@ -33,22 +32,8 @@
 
 .fc {
   margin: 0 auto;
-  color: black;
-  border-radius: 20px;
+  /* color: black; */
   /* background-color: #afb5c0; */
-}
-
-/* .fc-scrollgrid, .fc-dayGridMonthView {
-  apply this to elements in the corners of the calendar later
-  border-radius: 15px;
-} */
-
-.fc-toolbar-title {
-  color: white
-}
-
-.fc-daygrid-day-frame {
-  background-color: #EEE;
 }
 
 .basic-event {

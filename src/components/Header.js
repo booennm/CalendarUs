@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Navbar, Nav, Container, Row, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 
-function Header({userData}) {
+function Header() {
+    const [error, setError] = useState("");
+
     const { logout } = useAuth();
     const navigate = useNavigate();
 
@@ -19,27 +21,12 @@ function Header({userData}) {
     }
 
     return (
-      <Navbar className='w-100 headerbar'>
-        <Container fluid>
-          <Row className='w-100 justify-content-between align-items-center'>
-            <Col>
-              <Navbar.Brand href="/" style={{marginLeft: '20px'}}><i className="bi-calendar3"></i></Navbar.Brand>
-            </Col>
-            <Col className="flex-grow-1">
-            <Nav className="ml-auto">
-              <Nav.Link href="/about">About</Nav.Link>
-              <Nav.Link href="/profile">Profile</Nav.Link>
-            </Nav>
-            </Col>
-            <Col className='d-flex justify-content-end'>
-              {userData &&
-              <Navbar.Text style={{marginRight: '20px'}}>{userData.name}</Navbar.Text>
-              }
-              <Button variant="outline-secondary" onClick={handleLogout}>Log Out</Button>
-            </Col>
-          </Row>
-        </Container>
-      </Navbar>
+      <>
+        <Link to='/'>Home</Link>
+        <Link to='/profile'>Profile</Link>
+        <Link to='/about'>About</Link>
+        <Button variant="link" onClick={handleLogout}>Log Out</Button>
+      </>
     );
   }
   
