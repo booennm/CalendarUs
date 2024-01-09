@@ -19,10 +19,10 @@ function App() {
   const { currentUser } = useAuth();
 
   useEffect(() => {
-    if(currentUser.uid) {
+    if(currentUser && currentUser.uid) {
       getUserData();
     }
-  }, [currentUser.uid])
+  }, [currentUser])
 
   const getUserData = async () => {
     try {
