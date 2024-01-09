@@ -51,8 +51,14 @@
   background-color: #EEE;
 }
 
-.basic-event {
-  background-color: rgb(175, 84, 255);
+.event {
+  font-size: 4vw;
+}
+
+.event-title {
+  color: 'white';
+  inline-size: 2px;
+  overflow-wrap: break-all;
 }
 
 .App-link {

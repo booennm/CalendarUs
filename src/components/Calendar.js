@@ -56,7 +56,9 @@ function Calendar({userData}) {
           id: doc.id,
           title: doc.data().title,
           start: doc.data().start.toDate(),
-          end: doc.data().end.toDate()
+          end: doc.data().end.toDate(),
+          //backgroundColor: '#0db9fd',
+          display: 'block'
         })));
       });
     }
@@ -70,15 +72,6 @@ function Calendar({userData}) {
       setSelectedInfo(info);
       setOpenEditModal(true);
     };
-  
-    const EventItem = ({ info }) => {
-      const { event } = info;
-      return (
-        <div>
-          <p>{event.title}</p>
-        </div>
-      );  
-    };
 
     return (
       <div className='main-calendar'>
@@ -89,12 +82,12 @@ function Calendar({userData}) {
             plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin ]}
             initialView="dayGridMonth"
             slotDuration= '01:00:00'
+            displayEventTime={false}
             scrollTime={false}
             height={'auto'}
             dayMaxEvents={1}
             themeSystem='bootstrap5'
             events={calendarData}
-            eventContent={(info) => <EventItem info={info} className="basic-event"/>}
         />
         <CreateEvent
             show={openCreateModal}
