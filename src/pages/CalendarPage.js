@@ -81,7 +81,7 @@ function CalendarPage() {
           </Col>
         </Row>
         <Row>
-          <Button onClick={() => setOpenCreateModal(true)} className="w-100" type="submit">Create Event</Button>
+          <Button onClick={() => setOpenCreateModal(true)} className="w-auto mx-auto" type="submit">Create Event</Button>
         </Row>
         <Row className='mx-auto, mt-5'>
           <Col>

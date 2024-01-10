@@ -33,7 +33,9 @@ function Calendar({userData}) {
             id: item.id,
             start: item.start,
             end: item.end,
-            type: 'unavailability'
+            display: 'background',
+            backgroundColor: '#ff4848',
+            allDay: 'true'
           }))
         )))
       }
@@ -41,11 +43,20 @@ function Calendar({userData}) {
     
 
     useEffect(() => {
-      const combinedData = [];
-      combinedData.push(...events);
-      combinedData.push(...unavailability);
-      setCalendarData(combinedData);
+      if(events.length > 0 && unavailability.length > 0) {
+        const combinedData = [];
+        combinedData.push(...events);
+        unavailability.forEach(array => {
+          combinedData.push(...array)
+        });
+        setCalendarData(combinedData);
+      }
     }, [events, unavailability]);
+
+    useEffect(() => {
+      console.log(calendarData)
+    }, [calendarData])
+    
 
   
     const getEvents = () => {

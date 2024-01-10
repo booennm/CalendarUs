@@ -8,6 +8,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { query, collection, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { db, USERS_REF } from "../firebase";
 
 const Profile = () => {
@@ -24,10 +25,12 @@ const Profile = () => {
     onSnapshot(q, (querySnapshot) => {
       setEvents(querySnapshot.docs.map(doc => ({
         id: doc.id,
-        title: doc.data().title,
+        //title: doc.data().title,
         start: doc.data().start.toDate(),
         end: doc.data().end.toDate(),
-        backgroundColor: '#ff4848'
+        backgroundColor: '#ff4848',
+        borderColor: '#ff4848',
+        display: 'block'
       })));
     });
   }
@@ -36,8 +39,7 @@ const Profile = () => {
     const newEvent = {
         start: info.start,
         end: info.end,
-        userId: currentUser.uid,
-        type: 'unavailability'
+        userId: currentUser.uid
     }
 
     addEventToDb(newEvent);
@@ -61,31 +63,29 @@ const Profile = () => {
     }
   }
 
-  const EventItem = ({ info }) => {
-    //const { event } = info;
-    return (
-      <div style={{ backgroundColor: 'red' }}>
-        {/* <p>{info.timeText}</p> */}
-      </div>
-    );
-  };
-
   return (
-    <div className="App-content">
+    <div className="App-content profile-content">
       <Container>
-        <Row>
+        <Row><Col>
+          <h2>Profile</h2>
+          <p>Set dates when you are not available in this personal calendar</p>
+        </Col></Row>
+        <Row className='mt-4'>
           <Col>
             <FullCalendar
-              selectable
-              select={handleSelect}
-              eventClick={removeEventFromDb}
-              plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
-              initialView="timeGridWeek"
-              slotDuration= '01:00:00'
-              events={events}
-              eventContent={(info) => <EventItem info={info} />}
-              //dateClick={this.handleDateClick}
-            />
+            selectable
+            select={handleSelect}
+            eventClick={removeEventFromDb}
+            plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin ]}
+            initialView="dayGridMonth"
+            slotDuration= '01:00:00'
+            displayEventTime={false}
+            scrollTime={false}
+            height={'auto'}
+            dayMaxEvents={1}
+            themeSystem='bootstrap5'
+            events={events}
+        />
           </Col>
         </Row>
       </Container>
