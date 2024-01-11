@@ -12,7 +12,7 @@ export default function Users({userData}) {
         {userData.map((user, i) => (
             <ListGroup.Item key={i}>{user.name}</ListGroup.Item>
         ))}
-            <ListGroup.Item action onClick={() => setModalShow(true)}>Add User</ListGroup.Item>
+            <ListGroup.Item action variant='dark' onClick={() => setModalShow(true)}>Add User</ListGroup.Item>
         </ListGroup>
         <AddUserModal
             show={modalShow}

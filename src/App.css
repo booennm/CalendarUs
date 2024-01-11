@@ -27,6 +27,17 @@
   color: white;
 }
 
+.calendar-card {
+  margin-bottom: 20px;
+  width: 22vw;
+  height: 18vw;
+}
+
+.calendar-list {
+  padding-right: 8vw;
+  padding-left: 8vw;
+}
+
 .main-calendar {
   padding: 2vw;
 }

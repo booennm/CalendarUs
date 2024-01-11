@@ -3,7 +3,7 @@ import { useEffect, useState, Text } from 'react';
 import { db, CALENDARS_REF, USERS_REF } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { query, collection, onSnapshot, where, doc, getDoc } from 'firebase/firestore';
-import { Button } from 'react-bootstrap';
+import { Button, Card, Row, Col } from 'react-bootstrap';
 import Calendar from "../components/Calendar";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -39,11 +39,19 @@ function Home() {
 
   return (
     <div className="App-content">
+      <Row className='calendar-list' style={{marginRight: 0}}>
       {calendars.length > 0 && calendars.map((item, i) => (
-        <Button key={i} onClick={() => navigate('/calendar/' + item.id)} style={{marginBottom: 10}}>{item.name}</Button>
+        <Col className='d-flex flex-row justify-content-center'>
+        <Card key={i} onClick={() => navigate('/calendar/' + item.id)} className='calendar-card' style={{cursor: "pointer", height: '18vw'}}>
+          <Card.Header>{item.name}</Card.Header>
+          <Card.Body>{item.users.length} users</Card.Body>
+        </Card>
+        </Col>
       ))}
-      <Link to={'/calendar/new'}>Create New Calendar</Link>
-    </div>
+      <Col className='d-flex flex-row justify-content-center'>
+      <Button onClick={() => navigate('/calendar/new')} variant='outline-light' className='calendar-card' style={{width: '22vw'}}>Create New Calendar</Button>
+      </Col>
+    </Row></div>
   );
 }
 

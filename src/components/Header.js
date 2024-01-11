@@ -31,11 +31,11 @@ function Header({userData}) {
               <Nav.Link href="/profile">Profile</Nav.Link>
             </Nav>
             </Col>
-            <Col className='d-flex justify-content-end'>
+            <Col className='d-flex justify-content-end align-items-center'>
               {userData &&
               <Navbar.Text style={{marginRight: '20px'}}>{userData.name}</Navbar.Text>
               }
-              <Button variant="outline-secondary" onClick={handleLogout}>Log Out</Button>
+              <Button variant="outline-secondary" onClick={handleLogout}><span className='text-nowrap'>Log Out</span></Button>
             </Col>
           </Row>
         </Container>
