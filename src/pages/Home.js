@@ -42,14 +42,14 @@ function Home() {
       <Row className='calendar-list' style={{marginRight: 0}}>
       {calendars.length > 0 && calendars.map((item, i) => (
         <Col className='d-flex flex-row justify-content-center'>
-        <Card key={i} onClick={() => navigate('/calendar/' + item.id)} className='calendar-card' style={{cursor: "pointer", height: '18vw'}}>
+        <Card key={i} onClick={() => navigate('/calendar/' + item.id)} className='calendar-card' style={{cursor: "pointer", height: window.innerWidth > 1200 ? '8vw' : '18vw'}}>
           <Card.Header>{item.name}</Card.Header>
           <Card.Body>{item.users.length} users</Card.Body>
         </Card>
         </Col>
       ))}
       <Col className='d-flex flex-row justify-content-center'>
-      <Button onClick={() => navigate('/calendar/new')} variant='outline-light' className='calendar-card' style={{width: '22vw'}}>Create New Calendar</Button>
+      <Button onClick={() => navigate('/calendar/new')} variant='outline-light' className='calendar-card' style={{width: window.innerWidth > 1200 ? '12vw' : '22vw'}}>Create New Calendar</Button>
       </Col>
     </Row></div>
   );

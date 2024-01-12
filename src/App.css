@@ -81,6 +81,14 @@
   padding-top: 3vh;
 }
 
+@media (min-width: 1200px) {
+  .calendar-card {
+    margin-bottom: 20px;
+    width: 12vw;
+    height: 8vw;
+  }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

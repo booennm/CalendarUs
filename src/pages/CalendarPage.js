@@ -76,18 +76,30 @@ function CalendarPage() {
     <div className="App-content">
       <Container>
         <Row>
+        {window.innerWidth > 1200 && 
+          <Col xs={3} style={{marginTop: '2.5vw'}}>
+            <Row style={{marginBottom: '2.5vw'}}>
+              <Button onClick={() => setOpenCreateModal(true)} className="w-auto mx-auto" type="submit">Create Event</Button>
+            </Row>
+            <Users userData={users}/>
+          </Col>
+        }
           <Col>
             <Calendar userData={users}/>
           </Col>
         </Row>
-        <Row>
-          <Button onClick={() => setOpenCreateModal(true)} className="w-auto mx-auto" type="submit">Create Event</Button>
-        </Row>
-        <Row className='mx-auto, mt-5'>
-          <Col>
-            <Users userData={users}/>
-          </Col>
-        </Row>
+        {window.innerWidth <= 1200 &&
+          <> 
+          <Row>
+            <Button onClick={() => setOpenCreateModal(true)} className="w-auto mx-auto" type="submit">Create Event</Button>
+          </Row>
+          <Row className='mx-auto, mt-5'>
+            <Col>
+              <Users userData={users}/>
+            </Col>
+          </Row>
+          </>
+        }
       </Container>
       <CreateEvent
         show={openCreateModal}
